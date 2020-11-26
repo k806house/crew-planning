@@ -1,0 +1,9 @@
+numpy==1.19.0
+pandas==1.1.4
+matplotlib==3.3.3
+anytree==2.8.0
+Flask==1.1.2
+flask_cors==3.0.9
+networkx==2.5
+pulp==2.3.1
+Werkzeug==1.0.1
