@@ -10,8 +10,8 @@ jobs:
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@v2
         with:
-          playbook: cicd/server-deploy.yml
-          directory: ./
+          playbook: server-deploy.yml
+          directory: cicd
           key: ${{secrets.ANSIBLE_SSH_KEY}}
           inventory: |
             [rzd]
