@@ -19,7 +19,7 @@
       
   - name: Tear down
     docker_compose:
-      project_src: /opt/server
+      project_src: /opt/cicd
       state: absent
 
   - name: Build and start
