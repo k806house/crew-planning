@@ -11,7 +11,7 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: server-deploy.yml
-          directory: ./cicd
+          directory: cicd
           key: ${{secrets.ANSIBLE_SSH_KEY}}
           inventory: |
             [rzd]
