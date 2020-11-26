@@ -10,12 +10,13 @@ jobs:
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@v2
         with:
-          playbook: server-deploy.yml
+          playbook: cicd/server-deploy.yml
           directory: ./
           key: ${{secrets.ANSIBLE_SSH_KEY}}
           inventory: |
             [rzd]
             178.154.229.242 ansible_user=svc_k806
           options: |
+            -e 'ansible_python_interpreter=/usr/bin/python3'
             -u svc_k806
             -vvv
