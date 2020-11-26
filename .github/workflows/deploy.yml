@@ -4,23 +4,17 @@ on:
   workflow_dispatch:
 
 jobs:
-  myjob:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-    # Runs a single command using the runners shell
-    - name: myjob
-      run: ls -la
-
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: server-deploy.yml
+          directory: ./cicd
           key: ${{secrets.ANSIBLE_SSH_KEY}}
           inventory: |
             [rzd]
