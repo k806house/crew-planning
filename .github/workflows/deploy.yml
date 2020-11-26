@@ -1,12 +1,21 @@
-- name: Run playbook
-  uses: dawidd6/action-ansible-playbook@v2
-  with:
-    playbook: server-deploy.yml
-    directory: ./cicd
-    key: ${{secrets.ANSIBLE_SSH_KEY}}
-    inventory: |
-      [rzd]
-      178.154.229.242 ansible_user=svc_k806
-    options: |
-      -u svc_k806
-      -vvv
+name: Run deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: server-deploy.yml
+          directory: ./cicd
+          key: ${{secrets.ANSIBLE_SSH_KEY}}
+          inventory: |
+            [rzd]
+            178.154.229.242 ansible_user=svc_k806
+          options: |
+            -u svc_k806
+            -vvv
