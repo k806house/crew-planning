@@ -17,14 +17,13 @@
     pip:
       name: [docker, docker-compose]
       
-  - name: Tear down
+  - name: Restart
     docker_compose:
       project_src: /opt/cicd
-      state: absent
-
-  - name: Build and start
-    docker_compose:
-      project_src: /opt/cicd
+      services:
+        - core
+      state: present
+      restarted: true
     register: output
 
   - debug:
