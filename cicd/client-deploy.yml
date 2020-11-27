@@ -1,0 +1,33 @@
+---
+- hosts: rzd
+  gather_facts: no
+  become: yes
+  tasks:
+  - name: Copy client/
+    copy:
+      src: ../client/
+      dest: /opt/client
+
+  - name: Copy cicd
+    copy:
+      src: ../cicd/
+      dest: /opt/cicd
+
+  - name: Install docker module
+    pip:
+      name: [docker, docker-compose]
+      
+  - name: Tear down
+    docker_compose:
+      project_src: /opt/cicd
+      services: ['client']
+      state: absent
+
+  - name: Build and start
+    docker_compose:
+      project_src: /opt/cicd
+      services: ['client']
+    register: output
+
+  - debug:
+      var: output

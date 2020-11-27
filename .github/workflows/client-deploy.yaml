@@ -1,4 +1,4 @@
-name: Run deploy
+name: Run client deploy
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ jobs:
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@v2
         with:
-          playbook: server-deploy.yml
+          playbook: client-deploy.yml
           directory: ./cicd
           key: ${{secrets.ANSIBLE_SSH_KEY}}
           inventory: |
