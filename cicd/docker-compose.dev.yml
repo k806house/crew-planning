@@ -12,3 +12,12 @@ services:
     working_dir: /mnt/
     environment:
       - PYTHONDONTWRITEBYTECODE=1
+
+  client:
+    build:
+      context: ../client
+    ports:
+      - "4200:4200"
+    volumes:
+      - ../client/cp-frontend:/app
+      - /app/node_modules
