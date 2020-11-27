@@ -10,3 +10,6 @@ cd cicd && ./run_dev.sh
 2. В выпадающем меню, где написано All workflows, выбрать Run deploy
 3. Нажать Run workflow
 4. Нажать на зеленую кнопку Run workflow
+```
+http://178.154.229.242:8080/
+```
