@@ -20,8 +20,6 @@
   - name: Build new image
     docker_compose:
       project_src: /opt/cicd
-      services:
-        - сlient
       state: present
       build: yes
     register: output
