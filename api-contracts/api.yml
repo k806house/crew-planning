@@ -27,9 +27,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "array"
-              items:
-                $ref: "#/definitions/Route"
+              $ref: "#/definitions/CrewPairing"
         500:
           description: Server error
 
@@ -49,3 +47,7 @@ definitions:
         type: "string"
       stock:
         type: "string"
+  CrewPairing:
+    type: "array"
+    items:
+      $ref: "#/definitions/Route"
