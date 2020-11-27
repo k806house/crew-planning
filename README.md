@@ -17,8 +17,8 @@ cd cicd && ./run_dev.sh --client
 
 ### Деплой на виртуалку
 1. Зайти на гитхабе в Actions
-2. В выпадающем меню, где написано All workflows, выбрать Run deploy
-3. Нажать Run workflow
+2. Слева в Workflows выбрать нужный деплой (Run server deploy для деплоя бэка, Run client deploy для деплоя фронта)
+3. Справа нажать Run workflow
 4. Нажать на зеленую кнопку Run workflow
 
 Бэк:
