@@ -1,0 +1,15 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$theming-material-components-primary: mat-palette($mat-gray);
+$theming-material-components-accent: mat-palette($mat-red);
+$theming-material-components-warn: mat-palette($mat-red);
+
+$theming-material-components-theme: mat-light-theme(
+    $theming-material-components-primary,
+    $theming-material-components-accent,
+    $theming-material-components-warn
+);
+
+@include angular-material-theme($theming-material-components-theme);
