@@ -16,7 +16,14 @@
   - name: Install docker module
     pip:
       name: [docker, docker-compose]
-      
+
+  - name: Build new image
+    docker_compose:
+      project_src: /opt/cicd
+      state: present
+      build: yes
+    register: output
+
   - name: Restart
     docker_compose:
       project_src: /opt/cicd
