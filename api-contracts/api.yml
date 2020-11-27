@@ -1,0 +1,51 @@
+swagger: "2.0"
+info:
+  description: "Crew planning core API"
+  version: "1.0.0"
+  title: "Crew planning core API"
+basePath: "/"
+schemes:
+  - "http"
+paths:
+  /:
+    get:
+      description: "Start page"
+      produces:
+        - "text/html"
+      responses:
+        200:
+          description: Successfull operation
+        500:
+          description: Server error
+    post:
+      description: "Upload file to core"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: Successfull operation
+          schema:
+            type: "array"
+            items:
+              type: "array"
+              items:
+                $ref: "#/definitions/Route"
+        500:
+          description: Server error
+
+definitions:
+  Route:
+    type: "object"
+    properties:
+      activity:
+        type: "string"
+      arrival:
+        type: "string"
+        format: "date"
+      departure:
+        type: "string"
+        format: "date"
+      source:
+        type: "string"
+      stock:
+        type: "string"
