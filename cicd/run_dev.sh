@@ -1,4 +1,4 @@
 #!/bin/bash
 
-docker-compose build
-docker-compose up -d --remove-orphans
+docker-compose -f docker-compose.dev.yml build
+docker-compose -f docker-compose.dev.yml up -d --remove-orphans
