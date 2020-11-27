@@ -1,7 +1,7 @@
 <mat-card class="mat-elevation-z5 login">
   <div class="login--inner">
     <img src="./assets/rzd-logo.svg">
-    <h2>Вход в систему для распределения бригад</h2>
+    <h2>вход в систему <br> для распределения<br> бригад</h2>
     <mat-form-field appearance="fill">
       <mat-label>Логин</mat-label>
       <input matInput>
@@ -10,9 +10,10 @@
       <mat-label>Пароль</mat-label>
       <input type="password" matInput>
     </mat-form-field>
-    <button mat-stroked-button color="accent">
-      Тык
+    <button mat-stroked-button color="accent" [routerLink]="['/options']">
+      Войти
     </button>
+    <a>Забыли пароль?</a>
     <br>
   </div>
 </mat-card>

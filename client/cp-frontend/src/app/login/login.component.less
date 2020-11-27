@@ -1,9 +1,43 @@
 .login {
   margin: auto;
-  width: 50rem;
+  width: 40rem;
   margin-top: 10rem;
+  font-size: 1.2rem;
+  text-align: center;
 }
 
 .login--inner {
-  margin: auto;
+  margin: 8rem;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
 }
+
+.login h2 {
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+.login button {
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  padding: 1rem;
+  border: @Red solid 1.5pt;
+  margin-top: 2rem;
+}
+
+.login a {
+  text-decoration: underline solid;
+  color: @Grey;
+  margin-top: 3rem;
+  margin-bottom: 4rem;
+}
+
+img {
+  margin-top: 4rem;
+  margin-bottom: 3rem;
+  height: 4.5rem;
+}
+
+@import "./src/styles.less";
