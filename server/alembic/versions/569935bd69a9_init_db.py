@@ -95,8 +95,8 @@ def upgrade():
         sa.Column('train_id', sa.Integer(), nullable=False),
         sa.Column('departure_id', sa.Integer(), nullable=False),
         sa.Column('arrival_id', sa.Integer(), nullable=False),
-        sa.Column('date_start', sa.Date(), nullable=False),
-        sa.Column('date_end', sa.Date(), nullable=False),
+        sa.Column('date_start', sa.DateTime(), nullable=False),
+        sa.Column('date_end', sa.DateTime(), nullable=False),
     )
 
     op.create_table(

@@ -3,20 +3,11 @@ info:
   description: "Crew planning core API"
   version: "1.0.0"
   title: "Crew planning core API"
-basePath: "/"
+basePath: "/v1"
 schemes:
   - "http"
 paths:
-  /:
-    get:
-      description: "Start page"
-      produces:
-        - "text/html"
-      responses:
-        200:
-          description: Successfull operation
-        500:
-          description: Server error
+  /upload_schedule:
     post:
       description: "Upload file to core"
       produces:
@@ -30,6 +21,129 @@ paths:
               $ref: "#/definitions/CrewPairing"
         500:
           description: Server error
+          
+  /route:
+    post:
+      description: "Add route to train schedule"
+      produces:
+        - "application/json"
+      parameters:
+        - name: trainTitle
+          in: query
+          required: true
+          type: "string"
+        - name: from
+          in: query
+          required: true
+          type: "string"
+        - name: to
+          in: query
+          required: true
+          type: "string"
+        - name: startDate
+          in: query
+          required: true
+          type: "string"
+          format: "date"
+        - name: endDate
+          in: query
+          required: true
+          type: "string"
+          format: "date"
+      responses:
+        204:
+          description: Successfull operation
+          schema:
+            type: "object"
+            properties:
+              status:
+                type: string
+            example:
+              status: ok
+        500:
+          description: Server error
+          
+    delete:
+      description: "Delete route from train schedule"
+      produces:
+        - "application/json"
+      parameters:
+        - name: trainTitle
+          in: query
+          required: true
+          type: "string"
+        - name: from
+          in: query
+          required: true
+          type: "string"
+        - name: startDate
+          in: query
+          required: true
+          type: "string"
+          format: "date"
+      responses:
+        204:
+          description: Successfull operation
+          schema:
+            type: "object"
+            properties:
+              status:
+                type: string
+            example:
+              status: ok
+        500:
+          description: Server error
+          
+  /train:  
+    delete:
+      description: "Delete route from train schedule"
+      produces:
+        - "application/json"
+      parameters:
+        - name: trainTitle
+          in: query
+          required: true
+          type: "string"
+      responses:
+        204:
+          description: Successfull operation
+          schema:
+            type: "object"
+            properties:
+              status:
+                type: string
+            example:
+              status: ok
+        500:
+          description: Server error
+
+  /crew:
+    get:
+      description: "Get crew schedule"
+      produces:
+        - "application/json"
+      parameters:
+        - name: startDate
+          in: query
+          required: true
+          type: "string"
+          format: "date"
+        - name: endDate
+          in: query
+          required: true
+          type: "string"
+          format: "date"
+      responses:
+        200:
+          description: Successfull operation
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/CrewPairing"
+        404:
+          description: Not found
+        500:
+          description: Server error      
 
 definitions:
   Route:
