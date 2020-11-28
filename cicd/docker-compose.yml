@@ -9,7 +9,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ../data:/mnt/server
+      - ../data:/mnt/data
       - /home/svc_k806/.postgresql/root.crt:/root/.postgresql/root.crt
     working_dir: /mnt/
     environment:
