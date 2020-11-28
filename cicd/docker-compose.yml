@@ -5,11 +5,21 @@ services:
     build:
       context: ../server
       target: server
+    command: /bin/bash -c 'alembic upgrade head && python3 manage.py'
     ports:
       - "8080:8080"
     volumes:
-      - ../data:/mnt/server
+      - ../data:/mnt/data
+      - /home/svc_k806/.postgresql/root.crt:/root/.postgresql/root.crt
     working_dir: /mnt/
+    environment:
+      PYTHONDONTWRITEBYTECODE: 1
+      DB_USER: svc_k806
+      DB_PASSWORD: svc_k806_pass
+      DB_HOST: rc1c-r6aswywyvaj0ppiu.mdb.yandexcloud.net
+      DB_PORT: 6432
+      DB_NAME: crew_db
+      DB_ENV: prod
 
   client:
     build:

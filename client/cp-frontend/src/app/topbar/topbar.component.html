@@ -1,8 +1,12 @@
 <p>
   <mat-toolbar id="toolbar">
-    <span>My Application</span>
+    <div id="barRow">
+      <span><img  id="logo" src="./assets/rzd-logo.svg"></span>
+    </div>
   </mat-toolbar>
 </p>
 <div id="bg">
-  <mat-card class="mat-elevation-z5 login">Simple card</mat-card>
+  <mat-card class="mat-elevation-z5 login" id="container">
+    <router-outlet routerLink="brigade-schedule"></router-outlet>
+  </mat-card>
 </div>
