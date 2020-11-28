@@ -1,1 +1,85 @@
-<p>options works!</p>
+<!--<mat-divider [vertical]="true" style="height: 100%"></mat-divider>-->
+<h1>Заполните дополнительные параметры</h1>
+<div class="options--inner">
+  <div class="interval">
+    <h2>Временной интервал:</h2>
+    <mat-radio-group
+      aria-labelledby="example-radio-group-label"
+      class="example-radio-group"
+      [(ngModel)]="currentInterval">
+      <mat-radio-button class="example-radio-button" *ngFor="let interval of intervals" [value]="interval">
+        {{interval}}
+      </mat-radio-button>
+    </mat-radio-group>
+    <div *ngIf="currentInterval=='Другой'">
+      <!--datepicker-->
+      <mat-form-field appearance="fill">
+        <mat-label>Выберете интервал</mat-label>
+        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+          <input matStartDate formControlName="start" placeholder="Начало">
+          <input matEndDate formControlName="end" placeholder="Конец">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+    </div>
+  </div>
+  <mat-divider [vertical]="true" style="height: 100%"></mat-divider>
+  <div class="trains">
+    <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+      <h2>Изменения в расписании:</h2>
+      <mat-form-field>
+        <mat-label>Номер поезда</mat-label>
+        <input matInput formControlName="title" class="form-control">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Время</mat-label>
+        <input type="time" matInput formControlName="time" class="form-control">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Маршрут</mat-label>
+        <mat-select formControlName="route" class="form-control">
+          <mat-option *ngFor="let route of routs" [value]="route.viewValue">
+            {{route.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Выберете дату</mat-label>
+        <!-- #docregion toggle -->
+        <input matInput [matDatepicker]="picker" formControlName="date" class="form-control">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <button mat-icon-button color="accent">
+        <mat-icon>add</mat-icon>
+      </button>
+    </form>
+    <div *ngIf="trainsToAdd.length!=0">
+      <h1>Добавляемые рейсы</h1>
+      <table style="border: #444444 solid">
+        <thead>
+        <tr>
+          <th>№ Поезда</th>
+          <th>Дата</th>
+          <th>Время</th>
+          <th>Откуда Куда</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let train of trainsToAdd;">
+          <td>{{train.title}}</td>
+          <td>{{train.date}}</td>
+          <td>{{train.time}}</td>
+          <td>{{train.route}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <h1 *ngIf="trainsToDelete.length!=0">Удаляемые рейсы</h1>
+
+  </div>
+</div>
+
