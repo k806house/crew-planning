@@ -10,7 +10,7 @@ services:
       - "8080:8080"
     volumes:
       - ../data:/mnt/server
-      - /home/svc_k806/root.crt:/root/.postgresql/root.crt
+      - /home/svc_k806/.postgresql/root.crt:/root/.postgresql/root.crt
     working_dir: /mnt/
     environment:
       PYTHONDONTWRITEBYTECODE: 1
