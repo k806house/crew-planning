@@ -42,3 +42,17 @@
 
   <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>
+
+<div>
+  <button mat-stroked-button color="accent" [routerLink]="['/options']">
+    Вернуться
+  </button>
+  <button mat-stroked-button color="accent">
+    Сохранить
+    <mat-icon aria-hidden="false">get_app</mat-icon>
+  </button>
+  <button mat-stroked-button color="accent">
+    Распечатать
+    <mat-icon aria-hidden="false">print</mat-icon>
+  </button>
+</div>
