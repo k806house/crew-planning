@@ -31,21 +31,51 @@ def compute_crew_pairings(file):
 
 
 def prepare_data(file):
-    data = pd.read_csv(
-        file,
-        sep=',',
-        header=None,
-        names=['departure', 'source', 'activity', 'stock', 'arrival'])
+    rzd = pd.read_csv(file)
+    rzd['departure'] = pd.to_datetime(rzd['departure'],
+                                      utc=True).dt.tz_convert(None)
+    rzd['arrival'] = pd.to_datetime(rzd['arrival'],
+                                    utc=True).dt.tz_convert(None)
+    rzd = rzd.rename(columns={
+        'train': 'activity',
+        'from': 'source',
+        'to': 'stock'
+    })
+    rzd['passenger'] = 0
+
+    data = rzd
 
     data['departure'] = pd.to_datetime(data['departure'], dayfirst=True)
     data['arrival'] = pd.to_datetime(data['arrival'], dayfirst=True)
+    # data = data.loc[(data['departure'] < datetime.datetime.strptime('2020-12-08', '%Y-%m-%d')) &\
+    #                 (data['departure'] > datetime.datetime.strptime('2020-12-01', '%Y-%m-%d')),
+    #                 data.columns].reset_index(drop=True)
     data['trip_id'] = data.index
+
+    data_passenger = data[data['passenger'] == 0].copy()
+    data_passenger['trip_id'] += len(data)
+    data_passenger['passenger'] = 1
+
+    data.loc[data['passenger'] == 0, 'departure'] -= datetime.timedelta(
+        hours=1.5)
+    data.loc[data['passenger'] == 0, 'arrival'] += datetime.timedelta(
+        minutes=47)
+    # data.loc[data['passenger'] == 0, 'arrival'] += (data['arrival'] - data['departure']) / 2
+
+    data = pd.concat([data, data_passenger])
+
+    data = data.drop(
+        data[data['source'] == 'Самара, аквапарк'].index).reset_index(
+            drop=True)
+    data = data.drop(
+        data[data['source'] == 'Пенза'].index).reset_index(drop=True)
+    data['trip_id'] = data.index
+
     return data
 
 
 def legal(duty):
-    duty_len = duty[-1].arrival - duty[0].departure
-    return duty_len.total_seconds() < 16 * 60 * 60
+    return len(duty) == 1
 
 
 def generate_duties(data):
@@ -82,8 +112,10 @@ def generate_duties(data):
         duty = [data.iloc[n.name] for n in node.path[1:]]
         if legal(duty):
             duties.append(duty)
-            adjacent_flights = data[(data['source'] == data.iloc[node.name]['stock']) &\
-             (data['departure'] > data.iloc[node.name]['arrival'])].index
+            trip = data.iloc[node.name]
+            condition = (data['source'] == trip['stock']) & (data['departure'] > trip['arrival']) &\
+            (data['departure'] - trip['arrival'] < datetime.timedelta(hours=15))
+            adjacent_flights = data[condition].index
             for a in adjacent_flights:
                 new = Node(a, parent=node)
                 unexplored.append(new)
@@ -135,7 +167,10 @@ def construct_pairing_graph(duties, data):
         for d in stock_to_duties[duty_source]:
             num = d.split('_')[-1]
             other_duty = duties[int(num)]
-            if other_duty[-1]['arrival'] < duty[0]['departure']:
+            min_rest = (other_duty[-1]['arrival'] -
+                        other_duty[-1]['departure']) / 2
+            if other_duty[-1]['arrival'] + min_rest < duty[0]['departure'] \
+            and duty[0]['departure'] - other_duty[-1]['arrival'] <= datetime.timedelta(hours=36):
                 pairing_graph.add_edge(d, duty_label)
 
         pairing_graph.add_edge(duty_source, duty_label)
@@ -153,7 +188,10 @@ def construct_pairings(pairing_graph, data):
         source_node = source + '_source'
         stock_node = source + '_stock'
         pairings += list(
-            nx.all_simple_paths(pairing_graph, source_node, stock_node))
+            nx.all_simple_paths(pairing_graph,
+                                source_node,
+                                stock_node,
+                                cutoff=3))
     return pairings
 
 
@@ -162,19 +200,28 @@ def duty_by_name(name, duties):
 
 
 def duty_cost(duty):
-    return len(duty)
+    return sum([trip['passenger'] for trip in duty]) * 100
+
+
+def pairing_cost(pairing, duties):
+    duty1 = duty_by_name(pairing[1], duties)
+    duty2 = duty_by_name(pairing[2], duties)
+    return (duty2[0]['departure'] -
+            duty1[-1]['arrival']).total_seconds() / 60 / 60
 
 
 def init_lp_coeffs(pairings, duties, data):
     c = np.zeros(len(pairings))
-    b = np.zeros((len(pairings), len(data)))
+    b = np.zeros((len(pairings), len(data[data['passenger'] == 0])))
     for idx, p in enumerate(pairings):
+        c[idx] += pairing_cost(p, duties)
         for d in p:
             if d.startswith('Duty'):
                 duty = duty_by_name(d, duties)
                 c[idx] += duty_cost(duty)
                 for trip in duty:
-                    b[idx, trip['trip_id']] = 1
+                    if trip['passenger'] == 0:
+                        b[idx, trip['trip_id']] = 1
     return c, b
 
 
@@ -183,10 +230,10 @@ def optimize_crew_pairings(pairings, duties, data):
     prob = LpProblem("CP", LpMinimize)
 
     # x_i == 1 if pairing_i is selected and zero otherwise
-    x = LpVariable.matrix("x", list(range(len(pairings))), 0, 1, LpInteger)
+    x = LpVariable.matrix("x", list(range(len(pairings))), cat=LpBinary)
     s = b.T @ x
     for trip_idx in range(b.shape[1]):
-        prob += lpSum(s[trip_idx]) >= 1
+        prob += lpSum(s[trip_idx]) == 1
 
     prob += lpDot(x, c) + lpSum(s)
 

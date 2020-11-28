@@ -8,6 +8,7 @@ def format_pairings(pairings):
         cur = []
         for t in p:
             t = t.drop('trip_id')
+            t = t.drop('passenger')
             t['departure'] = t['departure'].strftime('%d/%m/%Y %H:%M')
             t['arrival'] = t['arrival'].strftime('%d/%m/%Y %H:%M')
             cur += [t.to_dict()]
