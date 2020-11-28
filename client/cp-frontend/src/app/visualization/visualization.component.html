@@ -7,9 +7,12 @@
 </p>
 <div id="bg">
   <mat-card class="mat-elevation-z5 login" id="container">
-    <a routerLink="/visualization">visualization</a>
-    <a routerLink="/brigade-schedule">brigade schedule</a>
-    <a routerLink="/options">options</a>
+    <a routerLink="/visualization">
+      <mat-icon aria-hidden="false">insert_chart_outlined</mat-icon>
+    </a>
+    <a routerLink="/brigade-schedule">
+      <mat-icon aria-hidden="false">table_chart</mat-icon>
+    </a>
     <plotly-plot [data]="data"></plotly-plot>
 
   </mat-card>
