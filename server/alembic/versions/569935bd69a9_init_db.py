@@ -111,7 +111,7 @@ def upgrade():
         sa.Column('id', sa.Integer(), primary_key=True),
         sa.Column('schedule_train_id', sa.Integer(), nullable=False),
         sa.Column('crew_id', sa.Integer(), nullable=False),
-        sa.PrimaryKeyConstraint('id', name=op.f('pk__schedule')),
+        sa.PrimaryKeyConstraint('id', name=op.f('pk__schedule_crew')),
     )
 
     op.bulk_insert(
