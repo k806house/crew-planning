@@ -21,7 +21,7 @@ train_type = sa.Enum('passenger', 'freight', name='train_type')
 def upgrade():
     op.create_table(
         'train',
-        sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column('id', sa.Integer(), primary_key=True),
         sa.Column('title', sa.String(length=256), nullable=False),
         sa.Column('type', train_type, nullable=False),
         sa.Column('route_id', sa.Integer(), nullable=False)
@@ -29,29 +29,29 @@ def upgrade():
 
     op.create_table(
         'depot',
-        sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column('id', sa.Integer(), primary_key=True),
         sa.Column('name', sa.String(length=256), nullable=False),
     )
 
     op.create_table(
         'route',
-        sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column('id', sa.Integer(), primary_key=True),
         sa.Column('departure_id', sa.Integer(), nullable=False),
         sa.Column('arrival_id', sa.Integer(), nullable=False),
     )
 
     op.create_table(
         'crew',
-        sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column('id', sa.Integer(), primary_key=True),
         sa.Column('head', sa.String(length=256), nullable=False),
         sa.Column('base_station_id', sa.Integer(), nullable=False),
     )
 
     op.create_table(
         'schedule',
-        sa.Column('id', sa.Integer, primary_key=True),
-        sa.Column('train_id', sa.Integer, nullable=False),
-        sa.Column('crew_id', sa.Integer, nullable=False),
+        sa.Column('id', sa.Integer(), primary_key=True),
+        sa.Column('train_id', sa.Integer(), nullable=False),
+        sa.Column('crew_id', sa.Integer(), nullable=False),
         sa.Column('date_start', sa.DateTime(), nullable=False),
         sa.Column('date_end', sa.DateTime(), nullable=False),
         sa.PrimaryKeyConstraint('id', name=op.f('pk__schedule')),

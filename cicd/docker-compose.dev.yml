@@ -19,6 +19,7 @@ services:
       - "8080:8080"
     volumes:
       - ../server:/mnt
+      - ../data:/mnt/data
     working_dir: /mnt/
     environment:
       PYTHONDONTWRITEBYTECODE: 1
