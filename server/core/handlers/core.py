@@ -14,6 +14,25 @@ from core.cp2workers import cp2workers
 from core.utils import allowed_file, format_pairings, format_schedule
 
 
+REQUIRED_FIELDS_ROUTE_POST = [
+    'trainTitle',
+    'from',
+    'to',
+    'startDate',
+    'endDate'
+]
+
+REQUIRED_FIELDS_ROUTE_DELETE = [
+    'trainTitle',
+    'from',
+    'startDate'
+]
+
+REQUIRED_FIELDS_TRAIN_DELETE = [
+    'trainTitle'
+]
+
+
 def construct_blueprint():
     core_bp = Blueprint('core', __name__)
     CORS(core_bp)
@@ -57,7 +76,7 @@ def construct_blueprint():
     def route():
         if request.method == 'POST':
             data = request.get_json(force=True)
-            if not valid_route_post(data):
+            if not valid_simple(data, REQUIRED_FIELDS_ROUTE_POST):
                 raise BadRequest('Data doesn\'t contain all required fields')
 
             route_post(data)
@@ -69,7 +88,7 @@ def construct_blueprint():
 
         elif request.method == 'DELETE':
             data = request.get_json(force=True)
-            if not valid_route_delete(data):
+            if not valid_simple(data, REQUIRED_FIELDS_ROUTE_DELETE):
                 raise BadRequest('Data doesn\'t contain all required fields')
 
             route_delete(data)
@@ -79,32 +98,24 @@ def construct_blueprint():
                 status=204, mimetype='application/json'
             )
 
+    @core_bp.route('/train', methods=['DELETE'])
+    def train():
+        if request.method == 'DELETE':
+            data = request.get_json(force=True)
+            if not valid_simple(data, REQUIRED_FIELDS_TRAIN_DELETE):
+                raise BadRequest('Data doesn\'t contain all required fields')
+
+            train_delete(data)
+
+            return Response(
+                json.dumps({'status': 'ok'}),
+                status=204, mimetype='application/json'
+            )
+
     return core_bp
 
 
-def valid_route_post(data):
-    required = [
-        'trainTitle',
-        'from',
-        'to',
-        'startDate',
-        'endDate'
-    ]
-
-    for field in required:
-        if field not in data:
-            return False
-
-    return True
-
-
-def valid_route_delete(data):
-    required = [
-        'trainTitle',
-        'from',
-        'startDate'
-    ]
-
+def valid_simple(data, required):
     for field in required:
         if field not in data:
             return False
@@ -168,9 +179,27 @@ def route_delete(data):
 
             del_sch_tr_q = schedule_train_table.delete().where(
                 and_(
-                        schedule_train_table.c.train_id == train_id,
-                        schedule_train_table.c.departure_id == departure_id,
-                        func.date(schedule_train_table.c.date_start) == date_start
+                    schedule_train_table.c.train_id == train_id,
+                    schedule_train_table.c.departure_id == departure_id,
+                    func.date(schedule_train_table.c.date_start) == date_start
+                )
+            )
+
+            conn.execute(del_sch_tr_q)
+
+
+def train_delete(data):
+    with current_app.db.connect() as conn:
+        with conn.begin():
+            title = data['trainTitle']
+            train = get_train_record(conn, title)
+            if train is None:
+                raise BadRequest(f'Train with title \'{title}\' not in database')
+            train_id = train['id']
+
+            del_sch_tr_q = schedule_train_table.delete().where(
+                and_(
+                    schedule_train_table.c.train_id == train_id,
                 )
             )
 
