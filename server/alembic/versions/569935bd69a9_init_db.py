@@ -24,6 +24,7 @@ def upgrade():
         sa.Column('id', sa.Integer, primary_key=True),
         sa.Column('title', sa.String(length=256), nullable=False),
         sa.Column('type', train_type, nullable=False),
+        sa.Column('route_id', sa.Integer(), nullable=False)
     )
 
     op.create_table(
@@ -49,9 +50,8 @@ def upgrade():
     op.create_table(
         'schedule',
         sa.Column('id', sa.Integer, primary_key=True),
-        sa.Column('route_id', sa.Integer, nullable=False),
+        sa.Column('train_id', sa.Integer, nullable=False),
         sa.Column('crew_id', sa.Integer, nullable=False),
-        sa.Column('route_id', sa.Integer, nullable=False),
         sa.Column('date_start', sa.DateTime(), nullable=False),
         sa.Column('date_end', sa.DateTime(), nullable=False),
         sa.PrimaryKeyConstraint('id', name=op.f('pk__schedule')),
