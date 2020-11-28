@@ -8,7 +8,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatCardModule} from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
-import { TopbarComponent } from './topbar/toolbar.component';
+import { TopbarComponent } from './topbar/topbar.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {OptionsComponent} from './options/options.component';
 import { BrigadeScheduleComponent } from './brigade-schedule/brigade-schedule.component';
@@ -42,7 +42,6 @@ PlotlyModule.plotlyjs = PlotlyJS;
     MatTableModule,
     MatPaginatorModule,
     PlotlyModule,
-
   ],
   providers: [],
   bootstrap: [AppComponent]

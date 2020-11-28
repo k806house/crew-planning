@@ -1,2 +1,2 @@
-<router-outlet></router-outlet>
-<app-visualization></app-visualization>
+<app-login *ngIf="!isLogin"></app-login>
+<app-toolbar *ngIf="isLogin"></app-toolbar>
