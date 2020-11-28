@@ -14,7 +14,7 @@ services:
     build:
       context: ../server
       target: server
-    command: /bin/bash -c 'alembic upgrade head && python3 manage.py'
+    command: /bin/bash -c 'sleep 10 && alembic upgrade head && python3 manage.py'
     ports:
       - "8080:8080"
     volumes:
@@ -27,7 +27,8 @@ services:
       DB_HOST: postgres
       DB_NAME: crew_db
       DB_ENV: dev
-
+    depends_on:
+      - postgres
 
   client:
     build:
