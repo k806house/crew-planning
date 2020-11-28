@@ -16,7 +16,7 @@ services:
       PYTHONDONTWRITEBYTECODE: 1
       DB_USER: svc_k806
       DB_PASSWORD: svc_k806_pass
-      DB_HOST: rc1c-r6aswywyvaj0ppiu.mdb.yandexcloud.net
+      DB_HOST: rc1c-kq6n8cn77silc7xu.mdb.yandexcloud.net
       DB_PORT: 6432
       DB_NAME: crew_db
       DB_ENV: prod
