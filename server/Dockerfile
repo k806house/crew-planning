@@ -6,8 +6,7 @@ RUN pip install --no-cache-dir -Ur /tmp/requirements.txt
 
 FROM builder as server
 
-ADD core/ /mnt/core/
-ADD manage.py /mnt/
+ADD . /mnt/
 
 WORKDIR /mnt
 
