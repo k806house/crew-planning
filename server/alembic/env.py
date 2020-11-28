@@ -26,10 +26,11 @@ target_metadata = None
 # ... etc.
 
 def get_url():
-    return "postgresql+psycopg2://{0}:{1}@{2}/{3}".format(
+    return "postgresql+psycopg2://{0}:{1}@{2}:{3}/{4}".format(
         os.getenv("DB_USER", "user"),
         os.getenv("DB_PASSWORD", "password"),
         os.getenv("DB_HOST", "postgres"),
+        os.getenv("DB_PORT", "5432"),
         os.getenv("DB_NAME", "crew_db"),
     )
 
