@@ -26,6 +26,7 @@ services:
       DB_USER: svc_k806
       DB_PASSWORD: svc_k806_pass
       DB_HOST: postgres
+      DB_PORT: 5432
       DB_NAME: crew_db
       DB_ENV: dev
     depends_on:
