@@ -9,6 +9,7 @@ import {VisualizationComponent} from './visualization/visualization.component';
 const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'options', component: OptionsComponent},
+  {path: 'login', component: LoginComponent},
   {path: 'testtopbar', component: TopbarComponent},
   {path: 'brigade-schedule', component: BrigadeScheduleComponent},
   {path: 'visualization', component: VisualizationComponent},

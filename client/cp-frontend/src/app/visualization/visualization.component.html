@@ -1,1 +1,20 @@
-<plotly-plot [data]="data" ></plotly-plot>
+<p>
+  <mat-toolbar id="toolbar">
+    <div id="barRow">
+      <span><img id="logo" src="./assets/rzd-logo.svg"></span>
+    </div>
+  </mat-toolbar>
+</p>
+<div id="bg">
+  <mat-card class="mat-elevation-z5 login" id="container">
+    <a routerLink="/visualization">
+      <mat-icon aria-hidden="false">insert_chart_outlined</mat-icon>
+    </a>
+    <a routerLink="/brigade-schedule">
+      <mat-icon aria-hidden="false">table_chart</mat-icon>
+    </a>
+    <plotly-plot [data]="data"></plotly-plot>
+
+  </mat-card>
+</div>
+

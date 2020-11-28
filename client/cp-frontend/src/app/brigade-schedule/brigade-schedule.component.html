@@ -1,58 +1,77 @@
-<div class="mat-elevation-z0">
-  <table mat-table [dataSource]="dataSource">
-    <!-- Position Column -->
-    <ng-container matColumnDef="train">
-      <th mat-header-cell *matHeaderCellDef> № Поезда </th>
-      <td mat-cell *matCellDef="let element"> {{element.train}} </td>
-    </ng-container>
+<p>
+  <mat-toolbar id="toolbar">
+    <div id="barRow">
+      <span><img id="logo" src="./assets/rzd-logo.svg"></span>
+    </div>
+  </mat-toolbar>
+</p>
+<div id="bg">
+  <mat-card class="mat-elevation-z5 login" id="container">
+    <a routerLink="/visualization">
+      <mat-icon aria-hidden="false">insert_chart_outlined</mat-icon>
+    </a>
+    <a routerLink="/brigade-schedule">
+      <mat-icon aria-hidden="false">table_chart</mat-icon>
+    </a>
+    <div class="mat-elevation-z0">
+      <table mat-table [dataSource]="dataSource">
+        <!-- Position Column -->
+        <ng-container matColumnDef="train">
+          <th mat-header-cell *matHeaderCellDef> № Поезда</th>
+          <td mat-cell *matCellDef="let element"> {{element.train}} </td>
+        </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="time">
-      <th mat-header-cell *matHeaderCellDef>Время</th>
-      <td mat-cell *matCellDef="let element">{{element.time}}</td>
-    </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="time">
+          <th mat-header-cell *matHeaderCellDef>Время</th>
+          <td mat-cell *matCellDef="let element">{{element.time}}</td>
+        </ng-container>
 
-    <!-- Weight Column -->
-    <ng-container matColumnDef="from">
-      <th mat-header-cell *matHeaderCellDef>Откуда</th>
-      <td mat-cell *matCellDef="let element">{{element.from}}</td>
-    </ng-container>
+        <!-- Weight Column -->
+        <ng-container matColumnDef="from">
+          <th mat-header-cell *matHeaderCellDef>Откуда</th>
+          <td mat-cell *matCellDef="let element">{{element.from}}</td>
+        </ng-container>
 
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="to">
-      <th mat-header-cell *matHeaderCellDef>Куда</th>
-      <td mat-cell *matCellDef="let element">{{element.to}}</td>
-    </ng-container>
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="to">
+          <th mat-header-cell *matHeaderCellDef>Куда</th>
+          <td mat-cell *matCellDef="let element">{{element.to}}</td>
+        </ng-container>
 
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="brigade">
-      <th mat-header-cell *matHeaderCellDef>№ Бригады</th>
-      <td mat-cell *matCellDef="let element">{{element.brigade}}</td>
-    </ng-container>
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="brigade">
+          <th mat-header-cell *matHeaderCellDef>№ Бригады</th>
+          <td mat-cell *matCellDef="let element">{{element.brigade}}</td>
+        </ng-container>
 
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="brigadir">
-      <th mat-header-cell *matHeaderCellDef>Бригадир</th>
-      <td mat-cell *matCellDef="let element">{{element.brigadir}}</td>
-    </ng-container>
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="brigadir">
+          <th mat-header-cell *matHeaderCellDef>Бригадир</th>
+          <td mat-cell *matCellDef="let element">{{element.brigadir}}</td>
+        </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+
+    <div>
+      <button mat-stroked-button color="accent" [routerLink]="['/options']">
+        Вернуться
+      </button>
+      <button mat-stroked-button color="accent">
+        Сохранить
+        <mat-icon aria-hidden="false">get_app</mat-icon>
+      </button>
+      <button mat-stroked-button color="accent">
+        Распечатать
+        <mat-icon aria-hidden="false">print</mat-icon>
+      </button>
+    </div>
+
+  </mat-card>
 </div>
 
-<div>
-  <button mat-stroked-button color="accent" [routerLink]="['/options']">
-    Вернуться
-  </button>
-  <button mat-stroked-button color="accent">
-    Сохранить
-    <mat-icon aria-hidden="false">get_app</mat-icon>
-  </button>
-  <button mat-stroked-button color="accent">
-    Распечатать
-    <mat-icon aria-hidden="false">print</mat-icon>
-  </button>
-</div>

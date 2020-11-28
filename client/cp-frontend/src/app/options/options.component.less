@@ -1,9 +1,75 @@
 @import "./src/styles.less";
 
-.options button {
-  font-size: 1.3vw;
+.btn-red {
   text-transform: uppercase;
-  padding: 1.5vh;
+  padding: 1.4vh;
   border: @Red solid 1.5pt;
-  margin-top: 10%;
+  margin-left: 42%;
+  margin-top: 5vh;
+  font-size: 1.4vw;
+}
+
+.mat-icon-button {
+  border: @Red solid 1.5pt;
+}
+
+mat-radio-button {
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+}
+
+.options--inner {
+  display: flex;
+  text-align: center;
+  justify-content: space-evenly;
+  margin: auto;
+}
+
+mat-radio-group {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
+}
+
+.trains, form {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
+}
+
+h1 {
+  margin: auto;
+  text-align: center;
+  margin-bottom: 5vh;
+}
+
+.mat-mini-fab {
+  margin: auto;
+}
+
+#toolbar {
+  background-color: @White;
+  padding: 0;
+}
+
+#bg {
+  background-color: @Light-Grey;
+}
+
+#container {
+  height: 70%;
+  margin: auto 10%;
+  padding: 5%;
+  //display: flex;
+  //flex-direction: column;
+  //text-align: center;
+  //justify-content: space-evenly;
+}
+
+#logo {
+  height: 40px;
+}
+
+#barRow {
+  margin: auto 10%;
 }
