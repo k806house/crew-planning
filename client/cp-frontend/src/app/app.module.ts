@@ -11,7 +11,15 @@ import {MatButtonModule} from '@angular/material/button';
 import { TopbarComponent } from './topbar/toolbar.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {OptionsComponent} from './options/options.component';
+import { BrigadeScheduleComponent } from './brigade-schedule/brigade-schedule.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
+import * as PlotlyJS from 'plotly.js/dist/plotly.js';
+import { PlotlyModule } from 'angular-plotly.js';
+import { VisualizationComponent } from './visualization/visualization.component';
+
+PlotlyModule.plotlyjs = PlotlyJS;
 
 @NgModule({
   declarations: [
@@ -20,6 +28,8 @@ import {OptionsComponent} from './options/options.component';
     TopbarComponent,
     LoginComponent,
     OptionsComponent,
+    BrigadeScheduleComponent,
+    VisualizationComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,6 +39,9 @@ import {OptionsComponent} from './options/options.component';
     MatInputModule,
     MatButtonModule,
     MatToolbarModule,
+    MatTableModule,
+    MatPaginatorModule,
+    PlotlyModule,
 
   ],
   providers: [],
