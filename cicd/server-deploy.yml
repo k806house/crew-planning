@@ -13,6 +13,11 @@
       src: ../cicd/
       dest: /opt/cicd
 
+  - name: Copy data
+    copy:
+      src: ../data/
+      dest: /opt/data
+
   - name: Install docker module
     pip:
       name: [docker, docker-compose]
