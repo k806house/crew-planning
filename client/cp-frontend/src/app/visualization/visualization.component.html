@@ -1,1 +1,17 @@
-<plotly-plot [data]="data" ></plotly-plot>
+<p>
+  <mat-toolbar id="toolbar">
+    <div id="barRow">
+      <span><img id="logo" src="./assets/rzd-logo.svg"></span>
+    </div>
+  </mat-toolbar>
+</p>
+<div id="bg">
+  <mat-card class="mat-elevation-z5 login" id="container">
+    <a routerLink="/visualization">visualization</a>
+    <a routerLink="/brigade-schedule">brigade schedule</a>
+    <a routerLink="/options">options</a>
+    <plotly-plot [data]="data"></plotly-plot>
+
+  </mat-card>
+</div>
+
