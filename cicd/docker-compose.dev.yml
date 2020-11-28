@@ -1,17 +1,33 @@
 version: '2.4'
 
 services:
+  postgres:
+    image: postgres:12
+    expose:
+      - 5432
+    environment:
+      POSTGRES_DB: crew_db
+      POSTGRES_USER: svc_k806
+      POSTGRES_PASSWORD: svc_k806_pass
+
   core:
     build:
       context: ../server
       target: server
+    command: /bin/bash -c 'alembic upgrade head && python3 manage.py'
     ports:
       - "8080:8080"
     volumes:
       - ../server:/mnt
     working_dir: /mnt/
     environment:
-      - PYTHONDONTWRITEBYTECODE=1
+      PYTHONDONTWRITEBYTECODE: 1
+      DB_USER: svc_k806
+      DB_PASSWORD: svc_k806_pass
+      DB_HOST: postgres
+      DB_NAME: crew_db
+      DB_ENV: dev
+
 
   client:
     build:
