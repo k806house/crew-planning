@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
-import {Train, TrainPrintable} from '../_models';
+import {TrainDelete, TrainAdd} from '../_models';
 import {DatePipe} from '@angular/common';
+import {TrainService} from '../_services/train.service';
 
 interface Route {
   value: number;
@@ -15,13 +16,13 @@ interface Route {
 })
 export class OptionsComponent implements OnInit {
   addForm: FormGroup;
+  deleteForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, public datepipe: DatePipe) {
+  constructor(private formBuilder: FormBuilder, public datepipe: DatePipe, private trainService: TrainService) {
   }
 
   currentInterval: string;
   intervals: string[] = ['Следущая неделя', 'Следущий месяц', 'Другой'];
-  currentRout: string;
   routs: Route[] = [
     {value: 1, viewValue: 'Самара – Пенза 1'},
     {value: 2, viewValue: 'Пенза 1 – Самара'}
@@ -32,51 +33,60 @@ export class OptionsComponent implements OnInit {
     end: new FormControl()
   });
 
-  trainsToDelete: Train[] = [];
-  trainsToAdd: TrainPrintable[] = [];
+  trainsToDelete: TrainDelete[] = [];
+  trainsToAdd: TrainAdd[] = [];
 
   get f() {
     return this.addForm.controls;
   }
 
+  get g() {
+    return this.deleteForm.controls;
+  }
+
   ngOnInit(): void {
     this.addForm = this.formBuilder.group({
       title: ['', Validators.required],
-      time: ['', Validators.required],
+      timeStart: ['', Validators.required],
       route: ['', Validators.required],
-      date: ['', Validators.required],
+      dateStart: ['', Validators.required],
+      timeEnd: ['', Validators.required],
+      dateEnd: ['', Validators.required]
+    });
 
+    this.deleteForm = this.formBuilder.group({
+      title: ['', Validators.required],
+      date: ['', Validators.required],
+      time: ['', Validators.required],
+      route: ['', Validators.required]
     });
   }
 
   // tslint:disable-next-line:typedef
   onSubmit() {
-    console.log(this.f);
-    const train = new TrainPrintable();
+    const train = new TrainAdd();
     train.title = this.f.title.value;
-    train.date = this.datepipe.transform(this.f.date.value, 'dd/MM/yyyy');
+    train.dateStart = this.datepipe.transform(this.f.dateStart.value, 'dd/MM/yyyy');
+    train.dateEnd = this.datepipe.transform(this.f.dateEnd.value, 'dd/MM/yyyy');
     train.route = this.f.route.value;
-    train.time = this.f.time.value;
+    train.timeStart = this.f.timeStart.value;
+    train.timeEnd = this.f.timeEnd.value;
     this.trainsToAdd.push(train);
+    console.log(train);
+    this.trainService.addTrain(train).pipe().subscribe(data => console.log(data));
     return 0;
-    // this.trainsToAdd
-    // this.submitted = true;
-    //
-    // // stop here if form is invalid
-    // if (this.loginForm.invalid) {
-    //   return;
-    // }
-    //
-    // this.loading = true;
-    // this.authenticationService.login(this.f.username.value, this.f.password.value)
-    //   .pipe(first())
-    //   .subscribe(
-    //     data => {
-    //       this.router.navigate([this.returnUrl]);
-    //     },
-    //     error => {
-    //       this.error = error;
-    //       this.loading = false;
-    //     });
+  }
+
+  // tslint:disable-next-line:typedef
+  onDelete() {
+    const train = new TrainDelete();
+    train.title = this.g.title.value;
+    train.date = this.datepipe.transform(this.g.date.value, 'dd/MM/yyyy');
+    train.time = this.g.time.value;
+    train.from = this.g.route.value;
+    this.trainsToDelete.push(train);
+    console.log(train);
+    this.trainService.deleteTrain(train).pipe().subscribe(data => console.log(data));
+    return 0;
   }
 }

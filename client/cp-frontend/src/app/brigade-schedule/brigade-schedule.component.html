@@ -7,12 +7,13 @@
 </p>
 <div id="bg">
   <mat-card class="mat-elevation-z5 login" id="container">
-    <a routerLink="/visualization">
-      <mat-icon aria-hidden="false">insert_chart_outlined</mat-icon>
-    </a>
-    <a routerLink="/brigade-schedule">
-      <mat-icon aria-hidden="false">table_chart</mat-icon>
-    </a>
+    <button mat-icon-button routerLink="/visualization">
+      <mat-icon>insert_chart_outlined</mat-icon>
+    </button>
+    <button mat-mini-fab color="accent" routerLink="/brigade-schedule">
+      <mat-icon>table_chart</mat-icon>
+    </button>
+
     <div class="mat-elevation-z0">
       <table mat-table [dataSource]="dataSource">
         <!-- Position Column -->
@@ -58,15 +59,15 @@
       <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
 
-    <div>
+    <div class="btn-group">
       <button mat-stroked-button color="accent" [routerLink]="['/options']">
         Вернуться
       </button>
-      <button mat-stroked-button color="accent">
+      <button mat-stroked-button color="primary">
         Сохранить
         <mat-icon aria-hidden="false">get_app</mat-icon>
       </button>
-      <button mat-stroked-button color="accent">
+      <button mat-stroked-button color="primary">
         Распечатать
         <mat-icon aria-hidden="false">print</mat-icon>
       </button>
