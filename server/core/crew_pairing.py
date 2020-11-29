@@ -49,17 +49,12 @@ def prepare_data(raw_data):
             'date_start': 'departure',
             'date_end': 'arrival',
             'departure_id': 'source',
-            'arrival_id': 'stock',
-            'id': 'trip_id'
+            'arrival_id': 'stock'
         })
 
     rzd['activity'] = rzd['activity'].apply(str)
     rzd['source'] = rzd['source'].apply(str)
     rzd['stock'] = rzd['stock'].apply(str)
-
-    print(rzd['source'].unique())
-    print(rzd['activity'].unique())
-    print(rzd['stock'].unique())
 
     rzd['departure'] = pd.to_datetime(rzd['departure'])
     #   utc=True).dt.tz_convert(None)
@@ -89,6 +84,7 @@ def prepare_data(raw_data):
     data = pd.concat([data, data_passenger])
     data = data.append(
         {
+            'id': 999999,
             'activity': 'ANCHOR',
             'departure': datetime.datetime(year=2040, month=1, day=1),
             'arrival': datetime.datetime(year=2040, month=1, day=1),
@@ -99,6 +95,7 @@ def prepare_data(raw_data):
         ignore_index=True)
     data = data.append(
         {
+            'id': 999999,
             'activity': 'ANCHOR',
             'departure': datetime.datetime(year=2040, month=1, day=1),
             'arrival': datetime.datetime(year=2040, month=1, day=1),
