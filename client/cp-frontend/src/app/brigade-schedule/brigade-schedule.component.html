@@ -19,7 +19,7 @@
         <!-- Position Column -->
         <ng-container matColumnDef="train">
           <th mat-header-cell *matHeaderCellDef> № Поезда(туда)</th>
-          <td mat-cell *matCellDef="let element"> {{element.train_to_title}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.train_to_title.slice(0, -1)}} </td>
         </ng-container>
 
         <!-- Name Column -->
@@ -37,7 +37,7 @@
         <!-- Symbol Column -->
         <ng-container matColumnDef="to">
           <th mat-header-cell *matHeaderCellDef>№ Поезда(обратно)</th>
-          <td mat-cell *matCellDef="let element">{{element.train_from_title}}</td>
+          <td mat-cell *matCellDef="let element">{{element.train_from_title.slice(0, -1)}}</td>
         </ng-container>
 
         <!-- Symbol Column -->
