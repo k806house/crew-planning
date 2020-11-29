@@ -14,7 +14,7 @@ export class VisualizationComponent implements OnInit {
   ys = [];
   labels = [];
   layout;
-  data;
+  data = [];
   constructor() { }
 
   getData(): void{
@@ -24,19 +24,6 @@ export class VisualizationComponent implements OnInit {
     const xy = json['xy'];
     const jsonLabels = json['labels'];
 
-    // with open('data.json', 'r') as f:
-    // data = f.read()
-    // data = json.loads(data)
-    // xs = []
-    // ys = []
-    // for i in range(len(data['xy'])):
-    // xs.append(data['xy'][0])
-    // ys.append(data['xy'][1])
-    //
-    // labels = []
-    // for i in range(len(data['labels'])):
-    // labels.append(data['labels'][i])
-
     for (const item of xy) {
       this.xs.push(item[0]);
       this.ys.push(item[1]);
@@ -45,38 +32,23 @@ export class VisualizationComponent implements OnInit {
     for (const label of jsonLabels) {
       this.labels.push(label);
     }
+    this.layout = {
+      xaxis: {
+        range: [this.xs[0][0], this.xs[0][7]]
+      }};
     console.log('xs', this.xs);
     console.log('ys', this.ys);
     console.log('labels', this.labels);
-    const trace1 = {
-      x: this.xs[0],
-      y: this.ys[0],
-      mode: 'lines',
-      type: 'scatter'
-    };
-
-    const trace2 = {
-      x: this.xs[1],
-      y: this.ys[1],
-      mode: 'lines',
-      type: 'scatter'
-    };
-
-    const trace3 = {
-      x: this.xs[2],
-      y: this.ys[2],
-      mode: 'lines',
-      type: 'scatter'
-    };
-
-    const trace4 = {
-      x: this.xs[3],
-      y: this.ys[3],
-      mode: 'lines',
-      type: 'scatter'
-    };
-
-    this.data = [trace1, trace2, trace3, trace4];
+    const size = this.xs.length;
+    for (let i = 0; i < size; i++) {
+      const trace = {
+        x: this.xs[i],
+        y: this.ys[i],
+        mode: 'lines',
+        type: 'scatter'
+      };
+      this.data.push(trace);
+    }
   }
 
   ngOnInit(): void {
