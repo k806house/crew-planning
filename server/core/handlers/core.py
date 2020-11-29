@@ -153,9 +153,9 @@ def construct_blueprint():
                             status=204,
                             mimetype='application/json')
 
-    @core_bp.route('/crew', methods=['GET'])
+    @core_bp.route('/crew', methods=['POST'])
     def crew():
-        if request.method == 'GET':
+        if request.method == 'POST':
             data = request.get_json(force=True)
             if not valid_simple(data, REQUIRED_FIELDS_CREW_GET):
                 raise BadRequest('Data doesn\'t contain all required fields')
