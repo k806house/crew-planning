@@ -9,6 +9,7 @@ def format_pairings(pairings):
         for t in p:
             t = t.drop('trip_id')
             t = t.drop('passenger')
+            t['id'] = int(t['id'])
             t['departure'] = t['departure'].strftime('%d/%m/%Y %H:%M')
             t['arrival'] = t['arrival'].strftime('%d/%m/%Y %H:%M')
             cur += [t.to_dict()]
@@ -22,6 +23,7 @@ def format_schedule(schedule):
         cur = []
         for t in sch:
             t = t.drop('trip_id')
+            t = t.drop('id')
             t['passenger'] = int(t['passenger'])
             t['departure'] = t['departure'].strftime('%d/%m/%Y %H:%M')
             t['arrival'] = t['arrival'].strftime('%d/%m/%Y %H:%M')
