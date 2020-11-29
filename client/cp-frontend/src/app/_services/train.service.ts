@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
-import {TrainAdd, TrainDelete} from '../_models';
+import {ScheduleItem, TrainAdd, TrainDelete} from '../_models';
 import {HttpClient} from '@angular/common/http';
 
 @Injectable({
@@ -36,4 +36,19 @@ export class TrainService {
         }
     });
   }
+
+  getCrewPairs(start: string, end: string) {
+    return this.http.post<ScheduleItem[]>(`${environment.apiUrl}/crew`, {
+      startDate: '28/11/2020 03:00:00',
+      endDate: '31/12/2020 23:00:00'
+    });
+  }
+
+  updateCrew(start: string, end: string) {
+    return this.http.post(`${environment.apiUrl}/trip_pairing`, {
+      startDate: '28/11/2020 03:00:00',
+      endDate: '31/12/2020 23:00:00'
+    });
+  }
+
 }

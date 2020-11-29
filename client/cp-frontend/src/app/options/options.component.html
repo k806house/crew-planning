@@ -97,7 +97,7 @@
                   <td>{{train.title}}</td>
                   <td>{{train.dateStart}}</td>
                   <td>{{train.timeStart}}</td>
-                  <td>{{train.route == 1 ? "Самара – Пенза 1" : "Пенза 1 – Самара"}}</td>
+                  <td>{{train.route == 1 ? "Самара – Пенза-1" : "Пенза-1 – Самара"}}</td>
                 </tr>
                 </tbody>
               </table>
@@ -155,7 +155,7 @@
         </mat-tab-group>
       </div>
     </div>
-    <button mat-stroked-button color="accent" class="btn-red" [routerLink]="['/brigade-schedule']">
+    <button mat-stroked-button color="accent" class="btn-red" (click)="onClick()">
       Рассчитать
     </button>
   </mat-card>

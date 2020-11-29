@@ -15,41 +15,41 @@
     </button>
 
     <div class="mat-elevation-z0">
-      <table mat-table [dataSource]="dataSource">
+      <table *ngIf="crewPairs" mat-table [dataSource]="dataSource">
         <!-- Position Column -->
         <ng-container matColumnDef="train">
-          <th mat-header-cell *matHeaderCellDef> № Поезда</th>
-          <td mat-cell *matCellDef="let element"> {{element.train}} </td>
+          <th mat-header-cell *matHeaderCellDef> № Поезда(туда)</th>
+          <td mat-cell *matCellDef="let element"> {{element.train_to_title}} </td>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="time">
-          <th mat-header-cell *matHeaderCellDef>Время</th>
-          <td mat-cell *matCellDef="let element">{{element.time}}</td>
+          <th mat-header-cell *matHeaderCellDef>Дата отправления(туда)</th>
+          <td mat-cell *matCellDef="let element">{{element.date_start_to}}</td>
         </ng-container>
 
         <!-- Weight Column -->
         <ng-container matColumnDef="from">
-          <th mat-header-cell *matHeaderCellDef>Откуда</th>
-          <td mat-cell *matCellDef="let element">{{element.from}}</td>
+          <th mat-header-cell *matHeaderCellDef>Дата прибытия(туда)</th>
+          <td mat-cell *matCellDef="let element">{{element.date_end_to}}</td>
         </ng-container>
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="to">
-          <th mat-header-cell *matHeaderCellDef>Куда</th>
-          <td mat-cell *matCellDef="let element">{{element.to}}</td>
+          <th mat-header-cell *matHeaderCellDef>№ Поезда(обратно)</th>
+          <td mat-cell *matCellDef="let element">{{element.train_from_title}}</td>
         </ng-container>
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="brigade">
-          <th mat-header-cell *matHeaderCellDef>№ Бригады</th>
-          <td mat-cell *matCellDef="let element">{{element.brigade}}</td>
+          <th mat-header-cell *matHeaderCellDef>Дата отправления(обратно)</th>
+          <td mat-cell *matCellDef="let element">{{element.date_start_from}}</td>
         </ng-container>
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="brigadir">
-          <th mat-header-cell *matHeaderCellDef>Бригадир</th>
-          <td mat-cell *matCellDef="let element">{{element.brigadir}}</td>
+          <th mat-header-cell *matHeaderCellDef>Дата прибытия(обратно)</th>
+          <td mat-cell *matCellDef="let element">{{element.date_end_from}}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -63,7 +63,7 @@
       <button mat-stroked-button color="accent" [routerLink]="['/options']">
         Вернуться
       </button>
-      <button mat-stroked-button color="primary" (click)="PrintPdf()">
+      <button *ngIf="crewPairs" mat-stroked-button color="primary" (click)="PrintPdf()">
         Сохранить
         <mat-icon aria-hidden="false">get_app</mat-icon>
       </button>
