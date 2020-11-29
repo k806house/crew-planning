@@ -1,2 +1,2 @@
-export * from './train';
-export * from './train-printable';
+export * from './trainDelete';
+export * from './trainAdd';

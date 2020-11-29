@@ -25,7 +25,8 @@ import {DatePipe} from '@angular/common';
 
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { PlotlyModule } from 'angular-plotly.js';
-import { VisualizationComponent } from './visualization/visualization.component';
+import {VisualizationComponent} from './visualization/visualization.component';
+import {MatTabsModule} from '@angular/material/tabs';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -57,7 +58,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
-    MatSelectModule
+    MatSelectModule,
+    MatTabsModule
 
   ],
   providers: [
