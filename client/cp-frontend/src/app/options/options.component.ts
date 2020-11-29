@@ -3,6 +3,7 @@ import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
 import {TrainDelete, TrainAdd} from '../_models';
 import {DatePipe} from '@angular/common';
 import {TrainService} from '../_services/train.service';
+import {Router} from '@angular/router';
 
 interface Route {
   value: number;
@@ -18,7 +19,7 @@ export class OptionsComponent implements OnInit {
   addForm: FormGroup;
   deleteForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, public datepipe: DatePipe, private trainService: TrainService) {
+  constructor(private formBuilder: FormBuilder, public datepipe: DatePipe, private trainService: TrainService, private router: Router) {
   }
 
   currentInterval: string;
@@ -88,5 +89,10 @@ export class OptionsComponent implements OnInit {
     console.log(train);
     this.trainService.deleteTrain(train).pipe().subscribe(data => console.log(data));
     return 0;
+  }
+
+  onClick() {
+    this.trainService.updateCrew(' ', ' ').pipe().subscribe(data => console.log(data));
+    this.router.navigate(['/brigade-schedule']);
   }
 }

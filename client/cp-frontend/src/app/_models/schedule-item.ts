@@ -1,8 +1,8 @@
 export class ScheduleItem {
-  trainFromTitle: string;
-  dateStartFrom: Date;
-  dateEndFrom: Date;
-  trainToTitle: string;
-  dateStartTo: Date;
-  dateEndTo: Date;
+  train_from_title: string;
+  date_start_from: Date;
+  date_end_from: Date;
+  train_to_title: string;
+  date_start_to: Date;
+  date_end_to: Date;
 }
