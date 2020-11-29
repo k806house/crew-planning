@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 
 import pandas as pd
-from flask import Blueprint, Response, request, redirect, current_app, flash, url_for, jsonify
+from flask import Blueprint, Response, request, redirect, current_app, jsonify
 from flask_cors import CORS
 from sqlalchemy import func, select, and_
 from werkzeug.utils import secure_filename
@@ -37,6 +37,56 @@ REQUIRED_FIELDS_CREW_SCHEDULE_POST = [
     'startDate',
     'endDate'
 ]
+
+REQUIRED_FIELDS_CREW_GET = [
+    'startDate',
+    'endDate'
+]
+
+SELECT_CREW_SCHEDULE = '''
+with route1 as (
+    select
+        sc.schedule_train_id_1,
+        sc.crew_id,
+        sc.schedule_train_id_2,
+        st.date_start,
+        st.date_end,
+        tr.title
+    from schedule_crew sc join schedule_train st
+        on sc.schedule_train_id_1=st.id
+        join train tr
+        on st.train_id=tr.id
+    where
+        st.date_start > '{date_start}' and
+        st.date_start < '{date_end}'
+),
+
+route2 as (
+    select
+        sc.schedule_train_id_1,
+        sc.crew_id,
+        sc.schedule_train_id_2,
+        st.date_start,
+        st.date_end,
+        tr.title
+    from schedule_crew sc join schedule_train st
+        on sc.schedule_train_id_2=st.id
+        join train tr
+        on st.train_id=tr.id
+)
+
+select
+    r1.title as train_from_title,
+    r1.date_start as date_start_from,
+    r1.date_end as date_end_from,
+    r2.title as train_to_title,
+    r2.date_start as date_start_to,
+    r2.date_end as date_end_to
+from route1 r1 join route2 r2
+on r1.schedule_train_id_1=r2.schedule_train_id_1 and
+  r1.crew_id=r2.crew_id and
+  r1.schedule_train_id_2=r2.schedule_train_id_2;
+'''
 
 
 def construct_blueprint():
@@ -106,10 +156,19 @@ def construct_blueprint():
                 status=204, mimetype='application/json'
             )
 
-    # @core_bp.route('/crew', methods=['GET'])
-    # def crew():
+    @core_bp.route('/crew', methods=['GET'])
+    def crew():
+        if request.method == 'GET':
+            data = request.get_json(force=True)
+            if not valid_simple(data, REQUIRED_FIELDS_CREW_GET):
+                raise BadRequest('Data doesn\'t contain all required fields')
 
+            resp = crew_get(data)
 
+            return Response(
+                json.dumps(resp),
+                status=200, mimetype='application/json'
+            )
 
     return core_bp
 
@@ -222,6 +281,30 @@ def train_delete(data):
             )
 
             conn.execute(del_sch_tr_q)
+
+
+def crew_get(data):
+    with current_app.db.connect() as conn:
+        with conn.begin():
+            date_start = date_to_ts(data['startDate'])
+            date_end = date_to_ts(data['endDate'])
+            crew_table = conn.execute(
+                            SELECT_CREW_SCHEDULE.format(
+                                date_start=date_start,
+                                date_end=date_end)
+                        )
+            tmp = []
+            for record in crew_table:
+                res = {
+                    'train_from_title': record.train_from_title,
+                    'date_start_from': record.date_start_from.strftime('%d/%m/%Y %H:%M:%S'),
+                    'date_end_from': record.date_end_from.strftime('%d/%m/%Y %H:%M:%S'),
+                    'train_to_title': record.train_to_title,
+                    'date_start_to': record.date_start_to.strftime('%d/%m/%Y %H:%M:%S'),
+                    'date_end_to': record.date_end_to.strftime('%d/%m/%Y %H:%M:%S')
+                }
+                tmp.append(res)
+    return tmp
 
 
 def format_date(date):
