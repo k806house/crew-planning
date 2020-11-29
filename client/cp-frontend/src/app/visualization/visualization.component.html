@@ -15,6 +15,19 @@
     </button>
     <plotly-plot [data]="data" [layout]="layout"></plotly-plot>
 
+    <div class="btn-group">
+      <button mat-stroked-button color="accent" [routerLink]="['/options']">
+        Вернуться
+      </button>
+      <button mat-stroked-button color="primary">
+        Сохранить
+        <mat-icon aria-hidden="false">get_app</mat-icon>
+      </button>
+      <button mat-stroked-button color="primary">
+        Распечатать
+        <mat-icon aria-hidden="false">print</mat-icon>
+      </button>
+    </div>
   </mat-card>
 </div>
 

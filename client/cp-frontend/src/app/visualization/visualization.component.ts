@@ -15,6 +15,7 @@ export class VisualizationComponent implements OnInit {
   labels = [];
   layout = {
     annotations: [],
+    showlegend: false,
   };
   data = [];
   constructor() { }
@@ -35,25 +36,25 @@ export class VisualizationComponent implements OnInit {
       this.labels.push(label);
     }
     this.layout['xaxis'] = {
-      range: [this.xs[0][0], this.xs[0][7]]
+      range: [this.xs[0][0], this.xs[0][4]]
     };
     console.log('xs', this.xs);
     console.log('ys', this.ys);
     console.log('labels', this.labels);
 
     for (let i = 0; i < this.xs.length; i++) {
-      for (let j = 0; j < this.xs[i].length; j++) {
+      for (let j = 0; j < this.xs[i].length; j += 2) {
         this.layout['annotations'].push({
           x: this.xs[i][j],
-          y: this.ys[i][j],
+          y: 0.5,
           xref: 'x',
           yref: 'y',
           text: 'Text',
           showarrow: false,
-          bordercolor: '#f0f0f0',
+          bordercolor: '#DA4216',
           borderwidth: 2,
           borderpad: 4,
-          bgcolor: '#ff7f0e',
+          bgcolor: '#f0f0f0',
           opacity: 0.8
         });
       }
