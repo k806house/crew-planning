@@ -21,6 +21,7 @@ export class OptionsComponent implements OnInit {
 
   currentInterval: string;
   intervals: string[] = ['Следущая неделя', 'Следущий месяц', 'Другой'];
+  displayedColumns: string[] = ['title', 'date', 'time', 'route'];
   currentRout: string;
   routs: Route[] = [
     {value: 1, viewValue: 'Самара – Пенза 1'},
