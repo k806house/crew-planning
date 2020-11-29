@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
-import {PdfService} from '../_services/pdf.service';
+// import {PdfService} from '../_services/pdf.service';
 
 @Component({
   selector: 'app-brigade-schedule',
@@ -14,8 +14,8 @@ export class BrigadeScheduleComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private pdfService: PdfService) {
-  }
+  // constructor(private pdfService: PdfService) {
+  // }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -23,7 +23,7 @@ export class BrigadeScheduleComponent implements AfterViewInit {
 
   // tslint:disable-next-line:typedef
   PrintPdf() {
-    this.pdfService.generatePdf();
+    // this.pdfService.generatePdf();
   }
 }
 

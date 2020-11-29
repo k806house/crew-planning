@@ -15,15 +15,12 @@ export class VisualizationComponent implements OnInit {
   labels = [];
   layout = {
     annotations: [],
-    showlegend: false,
+    // showlegend: false,
   };
   data = [];
   constructor() { }
 
   getData(): void{
-    // json[‘xy’][i][0] == xs
-    // json[‘xy’][i][1] == ys
-    // json[‘labels’][i][j] == label
     const xy = json['xy'];
     const jsonLabels = json['labels'];
 
