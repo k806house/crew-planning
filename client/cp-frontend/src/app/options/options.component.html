@@ -66,15 +66,14 @@
           </button>
         </form>
         <div *ngIf="trainsToAdd.length!=0">
-          <h1>Добавляемые рейсы</h1>
-          <table style="border: #444444 solid">
+          <h2>Добавляемые рейсы</h2>
+          <table>
             <thead>
             <tr>
               <th>№ Поезда</th>
               <th>Дата</th>
               <th>Время</th>
-              <th>Откуда Куда</th>
-
+              <th>Маршрут</th>
             </tr>
             </thead>
             <tbody>
@@ -88,7 +87,6 @@
           </table>
         </div>
         <h1 *ngIf="trainsToDelete.length!=0">Удаляемые рейсы</h1>
-
       </div>
     </div>
     <button mat-stroked-button color="accent" class="btn-red" [routerLink]="['/brigade-schedule']">
