@@ -43,9 +43,9 @@ def construct_blueprint():
     core_bp = Blueprint('core', __name__)
     CORS(core_bp)
 
-    @core_bp.route('/crew_schedule', methods=['POST'])
+    @core_bp.route('/crew_schedule', methods=['GET'])
     def crew_pairing():
-        if request.method == 'POST':
+        if request.method == 'GET':
             data = request.get_json(force=True)
             if not valid_simple(data, REQUIRED_FIELDS_CREW_SCHEDULE_POST):
                 raise BadRequest('Data doesn\'t contain all required fields')
@@ -56,9 +56,7 @@ def construct_blueprint():
 
             # ДАВИД В schedule_train_df ЛЕЖИТ ТАБЛИЦА schedule_train
             # ИЗ БАЗЫ, СДЕЛАЙ ТАК ЧТОБЫ АЛГОРИТМ ЗАРАБОТАЛ С ЭТОЙ ХЕРНЕЙ
-            #schedule_train_df.to_csv('test.csv', index=False)
-
-            pairings = compute_crew_pairings(save_path)
+            pairings = compute_crew_pairings(schedule_train_df)
             schedule1, schedule2 = cp2workers(pairings)
             return jsonify({
                 'Самарское депо': format_schedule(schedule1),
