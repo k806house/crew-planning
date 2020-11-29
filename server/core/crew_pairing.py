@@ -43,14 +43,15 @@ def prepare_data(raw_data):
     # })
     # rzd['passenger'] = 0
 
-    rzd = rzd.rename(columns={
-        'train_id': 'activity',
-        'date_start': 'departure',
-        'date_end': 'arrival',
-        'departure_id': 'source',
-        'arrival_id': 'stock',
-        'id': 'trip_id'
-    })
+    rzd = rzd.rename(
+        columns={
+            'train_id': 'activity',
+            'date_start': 'departure',
+            'date_end': 'arrival',
+            'departure_id': 'source',
+            'arrival_id': 'stock',
+            'id': 'trip_id'
+        })
 
     rzd['activity'] = rzd['activity'].apply(str)
     rzd['source'] = rzd['source'].apply(str)
@@ -61,9 +62,9 @@ def prepare_data(raw_data):
     print(rzd['stock'].unique())
 
     rzd['departure'] = pd.to_datetime(rzd['departure'])
-                                    #   utc=True).dt.tz_convert(None)
+    #   utc=True).dt.tz_convert(None)
     rzd['arrival'] = pd.to_datetime(rzd['arrival'])
-                                    # utc=True).dt.tz_convert(None)
+    # utc=True).dt.tz_convert(None)
     rzd['passenger'] = 0
 
     data = rzd
