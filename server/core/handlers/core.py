@@ -2,6 +2,7 @@ import os
 import json
 from datetime import datetime
 
+import pandas as pd
 from flask import Blueprint, Response, request, redirect, current_app, flash, url_for, jsonify
 from flask_cors import CORS
 from sqlalchemy import func, select, and_
@@ -32,45 +33,38 @@ REQUIRED_FIELDS_TRAIN_DELETE = [
     'trainTitle'
 ]
 
+REQUIRED_FIELDS_CREW_SCHEDULE_POST = [
+    'startDate',
+    'endDate'
+]
+
 
 def construct_blueprint():
     core_bp = Blueprint('core', __name__)
     CORS(core_bp)
 
-    @core_bp.route('/upload_schedule', methods=['GET', 'POST'])
+    @core_bp.route('/crew_schedule', methods=['POST'])
     def crew_pairing():
         if request.method == 'POST':
-            # check if the post request has the file part
-            if 'file' not in request.files:
-                flash('No file part')
-                return redirect(request.url)
-            file = request.files['file']
-            # if user does not select file, browser also
-            # submit an empty part without filename
-            if file.filename == '':
-                flash('No selected file')
-                return redirect(request.url)
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                save_path = os.path.join(current_app.config['UPLOAD_FOLDER'],
-                                         filename)
-                file.save(save_path)
-                pairings = compute_crew_pairings(save_path)
-                schedule1, schedule2 = cp2workers(pairings)
-                return jsonify({
-                    'Самарское депо': format_schedule(schedule1),
-                    'Пензенское депо': format_schedule(schedule2)
-                })
-                # return redirect(url_for('crew_pairing', filename=filename))
-        return '''
-        <!doctype html>
-        <title>Generate crew pairings</title>
-        <h1>Upload schedule</h1>
-        <form method=post enctype=multipart/form-data>
-        <input type=file name=file>
-        <input type=submit value=Upload>
-        </form>
-        '''
+            data = request.get_json(force=True)
+            if not valid_simple(data, REQUIRED_FIELDS_CREW_SCHEDULE_POST):
+                raise BadRequest('Data doesn\'t contain all required fields')
+            start_date = data['startDate']
+            end_date = data['endDate']
+            schedule_train_df = get_schedule_train_df(start_date, end_date)
+
+
+            # ДАВИД В schedule_train_df ЛЕЖИТ ТАБЛИЦА schedule_train
+            # ИЗ БАЗЫ, СДЕЛАЙ ТАК ЧТОБЫ АЛГОРИТМ ЗАРАБОТАЛ С ЭТОЙ ХЕРНЕЙ
+            #schedule_train_df.to_csv('test.csv', index=False)
+
+            pairings = compute_crew_pairings(save_path)
+            schedule1, schedule2 = cp2workers(pairings)
+            return jsonify({
+                'Самарское депо': format_schedule(schedule1),
+                'Пензенское депо': format_schedule(schedule2)
+            })
+
 
     @core_bp.route('/route', methods=['POST', 'DELETE'])
     def route():
@@ -112,6 +106,11 @@ def construct_blueprint():
                 status=204, mimetype='application/json'
             )
 
+    # @core_bp.route('/crew', methods=['GET'])
+    # def crew():
+
+
+
     return core_bp
 
 
@@ -121,6 +120,25 @@ def valid_simple(data, required):
             return False
 
     return True
+
+
+def get_schedule_train_df(date_start, date_end):
+    date_start = date_to_ts(date_start)
+    date_end = date_to_ts(date_end)
+    schedule_train_df = pd.read_sql(
+        '''
+            select * from schedule_train
+            where schedule_train.date_start >= '{0}' and schedule_train.date_end <= '{1}';
+        '''.format(date_start, date_end),
+        con=current_app.db
+    )
+    return schedule_train_df
+
+
+def date_to_ts(date):
+    date, time_ = date.split()
+    dd, mm, yy = date.split('/')
+    return f'{yy}-{mm}-{dd} {time_}'
 
 
 def route_post(data):
