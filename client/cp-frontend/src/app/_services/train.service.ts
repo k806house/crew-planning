@@ -8,7 +8,7 @@ import {HttpClient} from '@angular/common/http';
 })
 export class TrainService {
 
-  constructor(private http: HttpClient,) {
+  constructor(private http: HttpClient) {
   }
 
 
@@ -17,8 +17,8 @@ export class TrainService {
     return this.http.post(`${environment.apiUrl}/route`,
       {
         trainTitle: train.title,
-        from: +train.route === 1 ? 'Самара' : 'Пенза 1',
-        to: +train.route === 2 ? 'Самара' : 'Пенза 1',
+        from: +train.route === 1 ? 'Самара' : 'Пенза-1',
+        to: +train.route === 2 ? 'Самара' : 'Пенза-1',
         startDate: `${train.dateStart} ${train.timeStart}:00`,
         endDate: `${train.dateEnd} ${train.timeEnd}:00`
       });
@@ -31,7 +31,7 @@ export class TrainService {
       body:
         {
           trainTitle: train.title,
-          from: +train.from === 1 ? 'Самара' : 'Пенза 1',
+          from: +train.from === 1 ? 'Самара' : 'Пенза-1',
           startDate: `${train.date} ${train.time}:00`
         }
     });

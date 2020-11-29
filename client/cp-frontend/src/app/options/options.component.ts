@@ -73,7 +73,7 @@ export class OptionsComponent implements OnInit {
     train.timeEnd = this.f.timeEnd.value;
     this.trainsToAdd.push(train);
     console.log(train);
-    //this.trainService.addTrain(train).pipe().subscribe(data => console.log(data));
+    this.trainService.addTrain(train).pipe().subscribe(data => console.log(data));
     return 0;
   }
 
@@ -86,7 +86,7 @@ export class OptionsComponent implements OnInit {
     train.from = this.g.route.value;
     this.trainsToDelete.push(train);
     console.log(train);
-    //this.trainService.deleteTrain(train).pipe().subscribe(data => console.log(data));
+    this.trainService.deleteTrain(train).pipe().subscribe(data => console.log(data));
     return 0;
   }
 }
