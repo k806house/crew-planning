@@ -13,7 +13,9 @@ export class VisualizationComponent implements OnInit {
   xs = [];
   ys = [];
   labels = [];
-  layout;
+  layout = {
+    annotations: [],
+  };
   data = [];
   constructor() { }
 
@@ -32,20 +34,40 @@ export class VisualizationComponent implements OnInit {
     for (const label of jsonLabels) {
       this.labels.push(label);
     }
-    this.layout = {
-      xaxis: {
-        range: [this.xs[0][0], this.xs[0][7]]
-      }};
+    this.layout['xaxis'] = {
+      range: [this.xs[0][0], this.xs[0][7]]
+    };
     console.log('xs', this.xs);
     console.log('ys', this.ys);
     console.log('labels', this.labels);
-    const size = this.xs.length;
+
+    for (let i = 0; i < this.xs.length; i++) {
+      for (let j = 0; j < this.xs[i].length; j++) {
+        this.layout['annotations'].push({
+          x: this.xs[i][j],
+          y: this.ys[i][j],
+          xref: 'x',
+          yref: 'y',
+          text: 'Text',
+          showarrow: false,
+          bordercolor: '#f0f0f0',
+          borderwidth: 2,
+          borderpad: 4,
+          bgcolor: '#ff7f0e',
+          opacity: 0.8
+        });
+      }
+    }
+
+    console.log('annotatios', this.layout);
+
+    const size = this.xs[0].length;
     for (let i = 0; i < size; i++) {
       const trace = {
         x: this.xs[i],
         y: this.ys[i],
-        mode: 'lines',
-        type: 'scatter'
+        // mode: 'lines',
+        type: 'scatter',
       };
       this.data.push(trace);
     }
