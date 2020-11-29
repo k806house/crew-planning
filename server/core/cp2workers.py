@@ -10,6 +10,8 @@ def assign_work(pairings, base):
     events = []
     trip2trip = {}
     for p in pairings:
+        if p[1]['activity'] == 'ANCHOR':
+            continue
         events.append((p[0]['departure'], p[0]))
         events.append((p[0]['arrival'], p[0]))
         events.append((p[1]['departure'], p[1]))
@@ -21,7 +23,7 @@ def assign_work(pairings, base):
 
     base_cnt = 0
     base_cur = []
-    trip2worker = {}
+    trip2worker = defaultdict(list)
     worker2trip = defaultdict(list)
     for ev in events:
         if ev[0] == ev[1]['departure']:
@@ -30,18 +32,19 @@ def assign_work(pairings, base):
                 for idx, w in enumerate(base_cur):
                     if can_do(w, worker2trip):
                         worker2trip[w].append(ev[1])
-                        trip2worker[ev[1]['trip_id']] = w
+                        trip2worker[ev[1]['trip_id']].append(w)
                         base_cur.pop(idx)
                         ok = True
                         break
                 if not ok:
                     worker2trip[base_cnt].append(ev[1])
-                    trip2worker[ev[1]['trip_id']] = base_cnt
+                    trip2worker[ev[1]['trip_id']].append(base_cnt)
                     base_cnt += 1
         else:
             if ev[1]['stock'] == base:
                 trip_before = trip2trip[ev[1]['trip_id']]
-                w = trip2worker[trip_before['trip_id']]
+                ws = trip2worker[trip_before['trip_id']]
+                w = ws.pop(0)
                 worker2trip[w].append(ev[1])
                 base_cur.append(w)
 
@@ -49,8 +52,8 @@ def assign_work(pairings, base):
 
 
 def cp2workers(unwrapped_pairings):
-    base1 = 'Самара'
-    base2 = 'Пенза-1'
+    base1 = '1'
+    base2 = '2'
 
     base1_schedule = assign_work(
         list(filter(lambda p: p[0]['source'] == base1, unwrapped_pairings)),

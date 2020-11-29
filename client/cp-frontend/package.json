@@ -23,6 +23,7 @@
     "@angular/router": "~11.0.1",
     "angular-plotly.js": "^3.0.0",
     "node-sass": "^5.0.0",
+    "pdfmake": "^0.1.68",
     "plotly.js": "^1.57.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
