@@ -109,7 +109,8 @@ def upgrade():
     op.create_table(
         'schedule_crew',
         sa.Column('id', sa.Integer(), primary_key=True),
-        sa.Column('schedule_train_id', sa.Integer(), nullable=False),
+        sa.Column('schedule_train_id_1', sa.Integer(), nullable=False),
+        sa.Column('schedule_train_id_2', sa.Integer(), nullable=False),
         sa.Column('crew_id', sa.Integer(), nullable=False),
         sa.PrimaryKeyConstraint('id', name=op.f('pk__schedule_crew')),
     )

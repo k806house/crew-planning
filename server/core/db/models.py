@@ -80,7 +80,8 @@ class ScheduleCrew(Base):
     __tablename__ = 'schedule_crew'
 
     id = sa.Column(sa.Integer, primary_key=True)
-    schedule_train_id = sa.Column(sa.Integer, nullable=False)
+    schedule_train_id_1 = sa.Column(sa.Integer, nullable=False)
+    schedule_train_id_2 = sa.Column(sa.Integer, nullable=False)
     crew_id = sa.Column(sa.Integer, nullable=False)
 
 
