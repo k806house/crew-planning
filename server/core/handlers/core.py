@@ -99,9 +99,9 @@ def construct_blueprint():
                 'Пензенское депо': format_schedule(schedule2)
             })
 
-    @core_bp.route('/trip_pairing', methods=['GET'])
+    @core_bp.route('/trip_pairing', methods=['POST'])
     def trip_pairing():
-        if request.method == 'GET':
+        if request.method == 'POST':
             data = request.get_json(force=True)
 
             if not valid_simple(data, REQUIRED_FIELDS_TRIP_PAIRING_GET):
