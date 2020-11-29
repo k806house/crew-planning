@@ -17,8 +17,8 @@ def unwrap_pairing(pairing, duties):
     return res
 
 
-def compute_crew_pairings(file):
-    data = prepare_data(file)
+def compute_crew_pairings(raw_data):
+    data = prepare_data(raw_data)
     duties = generate_duties(data)
     pairing_graph = construct_pairing_graph(duties, data)
     pairings = construct_pairings(pairing_graph, data)
@@ -30,17 +30,40 @@ def compute_crew_pairings(file):
     return unwrapped_pairings
 
 
-def prepare_data(file):
-    rzd = pd.read_csv(file)
-    rzd['departure'] = pd.to_datetime(rzd['departure'],
-                                      utc=True).dt.tz_convert(None)
-    rzd['arrival'] = pd.to_datetime(rzd['arrival'],
-                                    utc=True).dt.tz_convert(None)
+def prepare_data(raw_data):
+    rzd = raw_data
+    # rzd['departure'] = pd.to_datetime(rzd['departure'],
+    #                                   utc=True).dt.tz_convert(None)
+    # rzd['arrival'] = pd.to_datetime(rzd['arrival'],
+    #                                 utc=True).dt.tz_convert(None)
+    # rzd = rzd.rename(columns={
+    #     'train': 'activity',
+    #     'from': 'source',
+    #     'to': 'stock'
+    # })
+    # rzd['passenger'] = 0
+
     rzd = rzd.rename(columns={
-        'train': 'activity',
-        'from': 'source',
-        'to': 'stock'
+        'train_id': 'activity',
+        'date_start': 'departure',
+        'date_end': 'arrival',
+        'departure_id': 'source',
+        'arrival_id': 'stock',
+        'id': 'trip_id'
     })
+
+    rzd['activity'] = rzd['activity'].apply(str)
+    rzd['source'] = rzd['source'].apply(str)
+    rzd['stock'] = rzd['stock'].apply(str)
+
+    print(rzd['source'].unique())
+    print(rzd['activity'].unique())
+    print(rzd['stock'].unique())
+
+    rzd['departure'] = pd.to_datetime(rzd['departure'])
+                                    #   utc=True).dt.tz_convert(None)
+    rzd['arrival'] = pd.to_datetime(rzd['arrival'])
+                                    # utc=True).dt.tz_convert(None)
     rzd['passenger'] = 0
 
     data = rzd
@@ -63,6 +86,26 @@ def prepare_data(file):
     # data.loc[data['passenger'] == 0, 'arrival'] += (data['arrival'] - data['departure']) / 2
 
     data = pd.concat([data, data_passenger])
+    data = data.append(
+        {
+            'activity': 'ANCHOR',
+            'departure': datetime.datetime(year=2040, month=1, day=1),
+            'arrival': datetime.datetime(year=2040, month=1, day=1),
+            'source': '1',
+            'stock': '2',
+            'passenger': 1
+        },
+        ignore_index=True)
+    data = data.append(
+        {
+            'activity': 'ANCHOR',
+            'departure': datetime.datetime(year=2040, month=1, day=1),
+            'arrival': datetime.datetime(year=2040, month=1, day=1),
+            'source': '2',
+            'stock': '1',
+            'passenger': 1
+        },
+        ignore_index=True)
 
     data = data.drop(
         data[data['source'] == 'Самара, аквапарк'].index).reset_index(
@@ -114,7 +157,7 @@ def generate_duties(data):
             duties.append(duty)
             trip = data.iloc[node.name]
             condition = (data['source'] == trip['stock']) & (data['departure'] > trip['arrival']) &\
-            (data['departure'] - trip['arrival'] < datetime.timedelta(hours=15))
+            ((data['departure'] - trip['arrival'] <= datetime.timedelta(hours=15)) | (data['activity'] == 'ANCHOR'))
             adjacent_flights = data[condition].index
             for a in adjacent_flights:
                 new = Node(a, parent=node)
@@ -170,7 +213,8 @@ def construct_pairing_graph(duties, data):
             min_rest = (other_duty[-1]['arrival'] -
                         other_duty[-1]['departure']) / 2
             if other_duty[-1]['arrival'] + min_rest < duty[0]['departure'] \
-            and duty[0]['departure'] - other_duty[-1]['arrival'] <= datetime.timedelta(hours=36):
+            and (duty[0]['departure'] - other_duty[-1]['arrival'] <= datetime.timedelta(hours=15)\
+            or duty[0]['activity'] == 'ANCHOR'):
                 pairing_graph.add_edge(d, duty_label)
 
         pairing_graph.add_edge(duty_source, duty_label)
