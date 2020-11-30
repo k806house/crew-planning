@@ -7,18 +7,21 @@ basePath: "/v1"
 schemes:
   - "http"
 paths:
-  /upload_schedule:
+  /trip_pairing:
     post:
-      description: "Upload file to core"
+      description: "Recalculate the optimal crew schedule"
       produces:
         - "application/json"
       responses:
-        200:
+        204:
           description: Successfull operation
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/CrewPairing"
+            type: "object"
+            properties:
+              status:
+                type: string
+            example:
+              status: ok
         500:
           description: Server error
           
@@ -118,7 +121,7 @@ paths:
           description: Server error
 
   /crew:
-    get:
+    post:
       description: "Get crew schedule"
       produces:
         - "application/json"
@@ -139,7 +142,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/CrewPairing"
+              $ref: "#/definitions/Route"
         404:
           description: Not found
         500:
@@ -149,19 +152,19 @@ definitions:
   Route:
     type: "object"
     properties:
-      activity:
+      train_from_title:
         type: "string"
-      arrival:
-        type: "string"
-        format: "date"
-      departure:
+      date_start_from:
         type: "string"
         format: "date"
-      source:
+      date_end_from:
         type: "string"
-      stock:
+        format: "date"
+      train_to_title:
         type: "string"
-  CrewPairing:
-    type: "array"
-    items:
-      $ref: "#/definitions/Route"
+      date_start_to:
+        type: "string"
+        format: "date"
+      date_end_to:
+        type: "string"
+        format: "date"
