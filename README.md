@@ -10,7 +10,7 @@
 
 ### Демо
 
-[demo-crew-planning](bit.ly/demo-crew-planning)
+[demo-crew-planning](http://bit.ly/demo-crew-planning)
 
 ### Запуск всех сервисов локально
 ```
