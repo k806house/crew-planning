@@ -14,11 +14,11 @@ services:
     working_dir: /mnt/
     environment:
       PYTHONDONTWRITEBYTECODE: 1
-      DB_USER: svc_k806
-      DB_PASSWORD: svc_k806_pass
-      DB_HOST: rc1c-kq6n8cn77silc7xu.mdb.yandexcloud.net
-      DB_PORT: 6432
-      DB_NAME: crew_db
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
       DB_ENV: prod
 
   client:
