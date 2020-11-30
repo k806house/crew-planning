@@ -32,17 +32,6 @@ def compute_crew_pairings(raw_data):
 
 def prepare_data(raw_data):
     rzd = raw_data
-    # rzd['departure'] = pd.to_datetime(rzd['departure'],
-    #                                   utc=True).dt.tz_convert(None)
-    # rzd['arrival'] = pd.to_datetime(rzd['arrival'],
-    #                                 utc=True).dt.tz_convert(None)
-    # rzd = rzd.rename(columns={
-    #     'train': 'activity',
-    #     'from': 'source',
-    #     'to': 'stock'
-    # })
-    # rzd['passenger'] = 0
-
     rzd = rzd.rename(
         columns={
             'train_id': 'activity',
@@ -55,20 +44,14 @@ def prepare_data(raw_data):
     rzd['activity'] = rzd['activity'].apply(str)
     rzd['source'] = rzd['source'].apply(str)
     rzd['stock'] = rzd['stock'].apply(str)
-
     rzd['departure'] = pd.to_datetime(rzd['departure'])
-    #   utc=True).dt.tz_convert(None)
     rzd['arrival'] = pd.to_datetime(rzd['arrival'])
-    # utc=True).dt.tz_convert(None)
     rzd['passenger'] = 0
 
     data = rzd
 
     data['departure'] = pd.to_datetime(data['departure'], dayfirst=True)
     data['arrival'] = pd.to_datetime(data['arrival'], dayfirst=True)
-    # data = data.loc[(data['departure'] < datetime.datetime.strptime('2020-12-08', '%Y-%m-%d')) &\
-    #                 (data['departure'] > datetime.datetime.strptime('2020-12-01', '%Y-%m-%d')),
-    #                 data.columns].reset_index(drop=True)
     data['trip_id'] = data.index
 
     data_passenger = data[data['passenger'] == 0].copy()
@@ -79,7 +62,6 @@ def prepare_data(raw_data):
         hours=1.5)
     data.loc[data['passenger'] == 0, 'arrival'] += datetime.timedelta(
         minutes=47)
-    # data.loc[data['passenger'] == 0, 'arrival'] += (data['arrival'] - data['departure']) / 2
 
     data = pd.concat([data, data_passenger])
     data = data.append(
@@ -271,7 +253,6 @@ def optimize_crew_pairings(pairings, duties, data):
     c, b = init_lp_coeffs(pairings, duties, data)
     prob = LpProblem("CP", LpMinimize)
 
-    # x_i == 1 if pairing_i is selected and zero otherwise
     x = LpVariable.matrix("x", list(range(len(pairings))), cat=LpBinary)
     s = b.T @ x
     for trip_idx in range(b.shape[1]):
